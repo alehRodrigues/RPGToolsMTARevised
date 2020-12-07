@@ -1,0 +1,158 @@
+﻿@* Refatoração do Layout Principal utilizando a biblioteca BalzorCSSStyled e Autenticação do Firebase*@
+@*  Author: Alexandre Rodrigues
+    Email: btt.ale@gmail.com
+    Data: 30/11/12
+*@
+
+@using System.Threading
+@inherits LayoutComponentBase
+
+<div class="page">
+
+
+    <div class="main mt-4">
+
+        @*<div class="top-row px-4">
+                <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+            </div>*@
+
+        <div class="container text-white">
+
+            @Body
+        </div>
+
+
+
+
+    </div>
+
+    <div class="footer">
+
+        <div class="row">
+            <div class="col-sm-1 col-md order-sm-1 order-2 text-center mx-5 footer-content">
+                <div class="logo-content py-3">
+                    <a href="https://www.worldofdarkness.com/dark-pack">
+                        <img class="img-fluid p-2" alt="WOD-DarkPack" src="/images/ClassicWOD.png" width="80">
+                    </a>
+                    <a href="https://www.worldofdarkness.com">
+                        <img class="img-fluid p-2" alt="WOD-DarkPack" src="/images/darkpack_tranparent_logo.png" width="100">
+                    </a>
+                    <p>
+                        @*localizer["DarkPack-Advice"]*@<a href=" https://www.worldofdarkness.com/">worldofdarkness.com</a>
+                </p>
+                <span>Este é um material não oficial da Paradox Interactive AB</span>
+            </div>
+        </div>
+        <div class="col-sm-1 col-md order-sm-2 order-1 text-center mx-5 footer-content">
+            <div class="logo-content pt-3">
+                <div class="mb-2">
+                    <button class="btn btn-success">SEJA UM DOADOR</button>
+                </div>
+                <div class="my-2">
+                    <button class="btn btn-primary">BUY ME A COFEE</button>
+                </div>
+                <div class="my-3 custom-toggle text-nowrap" style="font-size: medium;">
+                    <span class="mx-2">Português</span>
+                    <MatThemeProvider Theme="@customLanguageTheme">
+                        <MatSlideToggle TValue="bool" Label="" Class="" ValueChanged="@(r => SetLanguage(r))" />
+                    </MatThemeProvider>
+                    <span class="mx-2">English</span>
+                </div>
+                <div class="py-2">
+                    <p>
+                        <a class="" style="font-size: medium;" href=""><span>Termos de Uso e Privacidade</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1 col-md order-sm-3 order-3 text-center mx-5 footer-content">
+            <div class="logo-content pt-3 " style="font-size:1rem">
+                <div class="mb-4">
+                    <a class="" href="">
+                        <i class="fab fa-github" style="font-size: 2rem;"></i>
+                    </a>
+                    <a class="" href="">
+                        <i class="fab fa-discord mx-3" style="font-size: 2rem;"></i>
+                    </a>
+                </div>
+                <a class="" href="">
+                    <p>RPGTools Site</p>
+                </a>
+                <br />
+                <a class="" href="">
+                    <p>PRÓXIMOS SISTEMAS</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center footer-rights">
+            <p>&copy Todos os direitos reservados</p>
+            <p>
+                Desenvolvido por
+                <a class="" href="">Violet Flame - Alexandre Rodrigues</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+
+@code
+{
+    private System.Globalization.CultureInfo ciEn = new System.Globalization.CultureInfo("en");
+    private System.Globalization.CultureInfo ciPt = new System.Globalization.CultureInfo("pt");
+
+
+
+    private MatTheme customLanguageTheme = new MatTheme()
+    {
+        Surface = MatThemeColors.Green._800.Value,
+        OnSurface = MatThemeColors.Green.A700.Value,
+        Secondary = MatThemeColors.Red.A700.Value,
+    };
+
+    private void SetLanguage(bool language)
+    {
+        //Console.WriteLine(language ? "English" : "Português");
+
+        Console.WriteLine(System.Globalization.CultureInfo.CurrentUICulture.Name);
+
+        StateHasChanged();
+    }
+
+
+
+}
+
+
+
+<!--<div class="page">-->
+@*<div class="sidebar">
+        <NavMenu />
+    </div>*@
+
+<!--<div class="main">
+        <div class="top-row px-4">
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        </div>
+
+
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col text-white">parte 1</div>
+                <div class="col text-white">parte 2</div>
+                <div class="col text-white">parte 3</div>
+            </div>
+        </div>
+    </footer>
+
+</div>-->
