@@ -1,11 +1,12 @@
-﻿@* Refatoração do Layout Principal utilizando a biblioteca BalzorCSSStyled e Autenticação do Firebase*@
+﻿@*  Main Layout refactoring using the BalzorCSSStyled library and Firebase Authentication*@
 @*  Author: Alexandre Rodrigues
     Email: btt.ale@gmail.com
-    Data: 30/11/12
+    Date: 30/11/12
 *@
 
-@using System.Threading
 @inherits LayoutComponentBase
+@inject ILanguageContainerService localizer
+
 
 <div class="page">
 
@@ -17,12 +18,8 @@
             </div>*@
 
         <div class="container text-white">
-
             @Body
         </div>
-
-
-
 
     </div>
 
@@ -38,74 +35,102 @@
                         <img class="img-fluid p-2" alt="WOD-DarkPack" src="/images/darkpack_tranparent_logo.png" width="100">
                     </a>
                     <p>
-                        @*localizer["DarkPack-Advice"]*@<a href=" https://www.worldofdarkness.com/">worldofdarkness.com</a>
-                </p>
-                <span>Este é um material não oficial da Paradox Interactive AB</span>
-            </div>
-        </div>
-        <div class="col-sm-1 col-md order-sm-2 order-1 text-center mx-5 footer-content">
-            <div class="logo-content pt-3">
-                <div class="mb-2">
-                    <button class="btn btn-success">SEJA UM DOADOR</button>
-                </div>
-                <div class="my-2">
-                    <button class="btn btn-primary">BUY ME A COFEE</button>
-                </div>
-                <div class="my-3 custom-toggle text-nowrap" style="font-size: medium;">
-                    <span class="mx-2">Português</span>
-                    <MatThemeProvider Theme="@customLanguageTheme">
-                        <MatSlideToggle TValue="bool" Label="" Class="" ValueChanged="@(r => SetLanguage(r))" />
-                    </MatThemeProvider>
-                    <span class="mx-2">English</span>
-                </div>
-                <div class="py-2">
-                    <p>
-                        <a class="" style="font-size: medium;" href=""><span>Termos de Uso e Privacidade</span></a>
+                        @localizer.Keys["DarkPack-Advice"]<a href=" https://www.worldofdarkness.com/"> worldofdarkness.com</a>
                     </p>
+                    <span>Este é um material não oficial da Paradox Interactive AB</span>
+                </div>
+            </div>
+            <div class="col-sm-1 col-md order-sm-2 order-1 text-center mx-5 footer-content">
+                <div class="logo-content pt-3">
+                    <div class="mb-2">
+                        <button class="btn btn-success">SEJA UM DOADOR</button>
+                    </div>
+                    <div class="my-2">
+                        <button class="btn btn-primary">BUY ME A COFEE</button>
+                    </div>
+                    <div class="my-3 custom-toggle text-nowrap" style="font-size: medium;">
+                        <span class="mx-2">Português</span>
+                        <MatThemeProvider Theme="@customLanguageTheme">
+                            <MatSlideToggle TValue="bool" Label="" Class="" Value="@currLangOpt" ValueChanged="@(r => SetLanguage(r))" />
+                        </MatThemeProvider>
+                        <span class="mx-2">English</span>
+                    </div>
+                    <div class="py-2">
+                        <p>
+                            <a class="" style="font-size: medium;" href=""><span>Termos de Uso e Privacidade</span></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-1 col-md order-sm-3 order-3 text-center mx-5 footer-content">
+                <div class="logo-content pt-3 " style="font-size:1rem">
+                    <div class="mb-4">
+                        <a class="" href="">
+                            <i class="fa fa-github mx-3" aria-hidden="true" style="font-size: 2rem;"></i>
+                        </a>
+                        <a class="" href="">
+                            <i class="fa fa-discord mx-3" aria-hidden="true" style="font-size: 2rem;"></i>
+                        </a>
+                    </div>
+                    <a class="" href="">
+                        <p>RPGTools Site</p>
+                    </a>
+                    <br />
+                    <a class="" href="">
+                        <p>PRÓXIMOS SISTEMAS</p>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-sm-1 col-md order-sm-3 order-3 text-center mx-5 footer-content">
-            <div class="logo-content pt-3 " style="font-size:1rem">
-                <div class="mb-4">
-                    <a class="" href="">
-                        <i class="fa fa-github mx-3" aria-hidden="true" style="font-size: 2rem;"></i>
-                    </a>
-                    <a class="" href="">
-                        <i class="fa fa-discord mx-3" aria-hidden="true" style="font-size: 2rem;"></i>
-                    </a>
-                </div>
-                <a class="" href="">
-                    <p>RPGTools Site</p>
-                </a>
-                <br />
-                <a class="" href="">
-                    <p>PRÓXIMOS SISTEMAS</p>
-                </a>
+        <div class="row">
+            <div class="col text-center footer-rights">
+                <p>&copy Todos os direitos reservados</p>
+                <p>
+                    Desenvolvido por
+                    <a class="" href="">Violet Flame - Alexandre Rodrigues</a>
+                </p>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col text-center footer-rights">
-            <p>&copy Todos os direitos reservados</p>
-            <p>
-                Desenvolvido por
-                <a class="" href="">Violet Flame - Alexandre Rodrigues</a>
-            </p>
-        </div>
-    </div>
 
-</div>
+    </div>
 
 
 </div>
 
 @code
 {
-    private System.Globalization.CultureInfo ciEn = new System.Globalization.CultureInfo("en");
-    private System.Globalization.CultureInfo ciPt = new System.Globalization.CultureInfo("pt");
+    private bool currLangOpt { get; set; }
+
+    private string currLang = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+
+    protected override Task OnInitializedAsync()
+    {
+        localizer.InitLocalizedComponent(this);
+
+        if (currLang == "pt-BR" || currLang == "pt")
+        {
+            currLangOpt = false;
+        }
+        else
+        {
+            currLangOpt = true;
+        }
+
+        return base.OnInitializedAsync();
+    }
 
 
+    private void SetLanguage(bool language)
+    {
+        currLang = language ? "en-US" : "pt-BR";
+        currLangOpt = !currLangOpt;
+        Console.WriteLine("Alterando de " + System.Globalization.CultureInfo.CurrentCulture.Name + " para " + currLang);
+        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(currLang);
+        System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(currLang);
+
+        localizer.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(currLang));
+
+    }
 
     private MatTheme customLanguageTheme = new MatTheme()
     {
@@ -113,17 +138,6 @@
         OnSurface = MatThemeColors.Green.A700.Value,
         Secondary = MatThemeColors.Red.A700.Value,
     };
-
-    private void SetLanguage(bool language)
-    {
-        //Console.WriteLine(language ? "English" : "Português");
-
-        Console.WriteLine(System.Globalization.CultureInfo.CurrentUICulture.Name);
-
-        StateHasChanged();
-    }
-
-
 
 }
 
