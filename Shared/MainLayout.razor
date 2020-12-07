@@ -6,6 +6,7 @@
 
 @inherits LayoutComponentBase
 @inject ILanguageContainerService localizer
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
 
 
 <div class="page">
@@ -37,27 +38,27 @@
                     <p>
                         @localizer.Keys["DarkPack-Advice"]<a href=" https://www.worldofdarkness.com/"> worldofdarkness.com</a>
                     </p>
-                    <span>Este é um material não oficial da Paradox Interactive AB</span>
+                    <span>@localizer.Keys["DarkPack-UnofficialAdvice"]</span>
                 </div>
             </div>
             <div class="col-sm-1 col-md order-sm-2 order-1 text-center mx-5 footer-content">
                 <div class="logo-content pt-3">
                     <div class="mb-2">
-                        <button class="btn btn-success">SEJA UM DOADOR</button>
+                        <button class="btn btn-success">@localizer.Keys["BeDonator"]</button>
                     </div>
                     <div class="my-2">
-                        <button class="btn btn-primary">BUY ME A COFEE</button>
+                        <button class="btn btn-primary">@localizer.Keys["BuyMeCoffee"]</button>
                     </div>
                     <div class="my-3 custom-toggle text-nowrap" style="font-size: medium;">
                         <span class="mx-2">Português</span>
                         <MatThemeProvider Theme="@customLanguageTheme">
-                            <MatSlideToggle TValue="bool" Label="" Class="" Value="@currLangOpt" ValueChanged="@(r => SetLanguage(r))" />
+                            <MatSlideToggle TValue="bool" Value="@currLangOpt" ValueChanged="@(r => SetLanguage(r))" />
                         </MatThemeProvider>
                         <span class="mx-2">English</span>
                     </div>
                     <div class="py-2">
                         <p>
-                            <a class="" style="font-size: medium;" href=""><span>Termos de Uso e Privacidade</span></a>
+                            <a class="" style="font-size: medium;" href=""><span>@localizer.Keys["PrivacyTerms"]</span></a>
                         </p>
                     </div>
                 </div>
@@ -77,16 +78,16 @@
                     </a>
                     <br />
                     <a class="" href="">
-                        <p>PRÓXIMOS SISTEMAS</p>
+                        <p>@localizer.Keys["FutureSystems"]</p>
                     </a>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col text-center footer-rights">
-                <p>&copy Todos os direitos reservados</p>
+                <p>&copy @localizer.Keys["Rights"]</p>
                 <p>
-                    Desenvolvido por
+                    @localizer.Keys["DevBy"]
                     <a class="" href="">Violet Flame - Alexandre Rodrigues</a>
                 </p>
             </div>
@@ -101,20 +102,24 @@
 {
     private bool currLangOpt { get; set; }
 
-    private string currLang = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+    private string currLang;
 
     protected override Task OnInitializedAsync()
     {
-        localizer.InitLocalizedComponent(this);
 
-        if (currLang == "pt-BR" || currLang == "pt")
+        currLang = localStorage.GetItemAsString("predefinedLanguage");
+
+        if (string.IsNullOrEmpty(currLang))
         {
-            currLangOpt = false;
+            currLang = System.Threading.Thread.CurrentThread.CurrentCulture.Name;
+            localStorage.SetItem("predefinedLanguage", currLang);
         }
-        else
-        {
-            currLangOpt = true;
-        }
+
+        currLangOpt = (currLang == "pt-BR" || currLang == "pt") ? false : true;
+
+        localizer.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(currLang));
+
+        localizer.InitLocalizedComponent(this);
 
         return base.OnInitializedAsync();
     }
@@ -122,13 +127,14 @@
 
     private void SetLanguage(bool language)
     {
-        currLang = language ? "en-US" : "pt-BR";
         currLangOpt = !currLangOpt;
-        Console.WriteLine("Alterando de " + System.Globalization.CultureInfo.CurrentCulture.Name + " para " + currLang);
-        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(currLang);
-        System.Threading.Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(currLang);
+
+        currLang = language ? "en-US" : "pt-BR";
+
+        localStorage.SetItem("predefinedLanguage", currLang);
 
         localizer.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(currLang));
+
 
     }
 
