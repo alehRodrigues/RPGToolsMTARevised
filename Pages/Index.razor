@@ -1,7 +1,23 @@
 ﻿@page "/"
+@inject IJSRuntime JS
 
-<h1>Hello, world!</h1>
+<div class="container">
+    <img class="img-fluid px-5" alt="MAGE THE ASCENSION" src="/images/MageLogo.png" />
+    <div class="m-5" id="firebaseui-auth-container"></div>
+</div>
 
-Welcome to your new app.
+<div class="m-5 text-center">
+    <button type="button" class="btn btn-primary" @onclick="AuthStart">Autenticar</button>
+</div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code
+{
+
+    private void AuthStart()
+    {
+        var js = (IJSInProcessRuntime)JS;
+        js.InvokeVoid("StartAuthUI");
+        
+    }
+}
