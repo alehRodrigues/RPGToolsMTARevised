@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
             handlerSignInByLink(auth);
         default:
     // Error: invalid mode.
-    }
+  }
 }, false);
 
 //Custom function for get query parameters
