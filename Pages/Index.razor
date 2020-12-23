@@ -6,18 +6,38 @@
     <div class="m-5" id="firebaseui-auth-container"></div>
 </div>
 
-<div class="m-5 text-center">
-    <button type="button" class="btn btn-primary" @onclick="AuthStart">Autenticar</button>
-</div>
+@*<div class="m-5 text-center">
+        <button type="button" class="btn btn-primary" @onclick="AuthStart">Autenticar</button>
+    </div>*@
 
 
 @code
 {
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    protected override void OnInitialized()
+    {
+        //AuthStart();
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        AuthStart();
+        base.OnAfterRender(firstRender);
+    }
 
     private void AuthStart()
     {
         var js = (IJSInProcessRuntime)JS;
         js.InvokeVoid("StartAuthUI");
-        
     }
 }

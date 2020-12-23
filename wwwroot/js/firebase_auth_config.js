@@ -23,10 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // (Optional) Get the language code if available.
     var lang = getParameterByName('lang') || 'en';
 
-    console.log(mode);
-    console.log(actionCode);
-    console.log(continueUrl);
-    console.log(lang);
+    //console.log(mode);
+    //console.log(actionCode);
+    //console.log(continueUrl);
+    //console.log(lang);
 
     // Configure the Firebase SDK.
     // This is the minimum configuration required for the API to be used.
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
             handlerSignInByLink(auth);
         default:
     // Error: invalid mode.
-  }
+    }
 }, false);
 
 //Custom function for get query parameters
@@ -158,7 +158,7 @@ function handlerSignInByLink(auth) {
             .then(function (result) {
                 // Clear email from storage.
                 window.localStorage.removeItem('emailForSignIn');
-                console.log("logado");
+                //console.log("logado");
                 // You can access the new user via result.user
                 // Additional user info profile not available via:
                 // result.additionalUserInfo.profile == null

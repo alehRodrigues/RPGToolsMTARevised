@@ -106,7 +106,6 @@
 
     protected override Task OnInitializedAsync()
     {
-
         currLang = localStorage.GetItemAsString("predefinedLanguage");
 
         if (string.IsNullOrEmpty(currLang))
@@ -134,7 +133,6 @@
         localStorage.SetItem("predefinedLanguage", currLang);
 
         localizer.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo(currLang));
-
 
     }
 

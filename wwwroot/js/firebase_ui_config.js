@@ -37,7 +37,7 @@ const uiConfig = {
 
 };
 
-//Set persistence of athenticate status SESSION for development
+//Set persistence of authenticate status SESSION for development
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
 const ui = new firebaseui.auth.AuthUI(firebase.auth());
 

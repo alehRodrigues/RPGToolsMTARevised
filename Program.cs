@@ -11,6 +11,7 @@ using MatBlazor;
 using AKSoftware.Localization.MultiLanguages;
 using System.Reflection;
 using Blazored.LocalStorage;
+using RPGToolsMTARevised.Auth;
 
 namespace RPGToolsMTARevised
 {
@@ -29,6 +30,7 @@ namespace RPGToolsMTARevised
             builder.Services.AddLanguageContainer(Assembly.GetExecutingAssembly());
             //Add Blazored LocalStorage Service
             builder.Services.AddBlazoredLocalStorage(config => config.JsonSerializerOptions.WriteIndented = true);
+            
 
             await builder.Build().RunAsync();
         }
